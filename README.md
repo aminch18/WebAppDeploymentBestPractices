@@ -76,6 +76,9 @@ Whenever possible, use deployment slots when deploying a new production build. W
 
 ### Preform smoke web tests during deploy to ensure your api/web is responding
 
+Smoke web tests consist of simple http requests to make sure everything is working (or at least responding).
+
+https://marketplace.visualstudio.com/items?itemName=miguelcruz.vsts-smoke-web-test-task
 
 ## Deployment Configuration
 
@@ -87,7 +90,15 @@ Keeps the app loaded even when there's no traffic. It's required for continuous 
 
 In a multi-instance deployment, ensure that the client is routed to the same instance for the life of the session. You can set this option to Off for stateless applications.
 
-### HTTP version
+### HTTP version 2.0
+
+The primary goals for HTTP/2 are to reduce latency by enabling full request and response multiplexing, minimize protocol overhead via efficient compression of HTTP header fields, and add support for request prioritization and server push.
+
+- HTTP/2 is binary
+- Fully multiplexed, instead of ordered and blocking
+- Ability to use one connection for parallelism
+- Has one TCP/IP connection
+- Uses header compression to reduce overhead
 
 ### Local Cache
 
@@ -98,6 +109,24 @@ Local cache is not supported in function apps or containerized App Service apps,
 
 ## Differences between tiers
 
-### Configure autoscale
+- Shared compute: Free and Shared, the two base tiers, runs an app on the same Azure VM as other App Service apps, including apps of other customers. These tiers allocate CPU quotas to each app that runs on the shared resources, and the resources cannot scale out.
 
-### Vertical vs horizontal scaling
+- Dedicated compute: The Basic, Standard, Premium, PremiumV2, and PremiumV3 tiers run apps on dedicated Azure VMs. Only apps in the same App Service plan share the same compute resources. The higher the tier, the more VM instances are available to you for scale-out.
+
+- Isolated: This tier runs dedicated Azure VMs on dedicated Azure Virtual Networks. It provides network isolation on top of compute isolation to your apps. It provides the maximum scale-out capabilities.
+
+https://azure.microsoft.com/en-us/pricing/details/
+
+### Scale up (Vertical scale)
+
+Get more CPU, memory, disk space, and extra features like dedicated virtual machines (VMs), custom domains and certificates, staging slots, autoscaling, and more. You scale up by changing the pricing tier of the App Service plan that your app belongs to.
+
+### Scale up (Horizontal scale)
+
+Increase the number of VM instances that run your app. You can scale out to as many as 30 instances, depending on your pricing tier. App Service Environments in Isolated tier further increases your scale-out count to 100 instances. 
+
+### Autoscale
+
+Autoscale only scales horizontally, which is an increase ("out") or decrease ("in") in the number of VM instances. Horizontal is more flexible in a cloud situation as it allows you to run potentially thousands of VMs to handle load.
+
+Estimation during a scale-in is intended to avoid "flapping" situations, where scale-in and scale-out actions continually go back and forth. Keep this behavior in mind when you choose the same thresholds for scale-out and in.
