@@ -21,16 +21,6 @@ App Service supports the following deployment mechanisms:
 - Zip Deploy
 - Run From Package
 - War Deploy ( Java Apps )
- 
-### Deployment slots
-
-Whenever possible, use deployment slots when deploying a new production build. When using a Standard App Service Plan tier or better, you can deploy your app to a staging environment, validate your changes, and do smoke tests. When you are ready, you can swap your staging and production slots. The swap operation warms up the necessary worker instances to match your production scale, thus eliminating downtime.
-
-### Local Cache
-
-Azure App Service content is stored on Azure Storage and is surfaced up in a durable manner as a content share. However, some apps just need a high-performance, read-only content store that they can run with high availability. These apps can benefit from using local cache. Local cache is not recommended for content management sites such as WordPress.
-
-Local cache is not supported in function apps or containerized App Service apps, such as in Windows Containers or in App Service on Linux.
 
 ## Different types of deployments and which one to use
 
@@ -64,7 +54,9 @@ Works on both Windows and Linux automation agents when the target is a Web App f
 
 ## Roll Out strategies with 0 down time
 
-When you deploy your web app, you can use a separate deployment slot instead of the default production slot when you're running in the Standard, Premium, or Isolated App Service plan tier. Deployment slots are live apps with their own host names. App content and configurations elements can be swapped between two deployment slots, including the production slot.
+### Deployment slots
+
+Whenever possible, use deployment slots when deploying a new production build. When using a Standard App Service Plan tier or better, you can deploy your app to a staging environment, validate your changes, and do smoke tests. When you are ready, you can swap your staging and production slots. The swap operation warms up the necessary worker instances to match your production scale, thus eliminating downtime.
 
 1. Apply the following settings from the target slot (for example, the production slot) to all instances of the source slot:
 
@@ -82,4 +74,30 @@ When you deploy your web app, you can use a separate deployment slot instead of 
 
 8. Now that the source slot has the pre-swap app previously in the target slot, perform the same operation by applying all settings and restarting the instances.
 
-## Preform smoke web tests during deploy to ensure your api/web is responding
+### Preform smoke web tests during deploy to ensure your api/web is responding
+
+
+## Deployment Configuration
+
+### Always On
+
+Keeps the app loaded even when there's no traffic. It's required for continuous WebJobs or for WebJobs that are triggered using a CRON expression.
+
+### ARR affinity
+
+In a multi-instance deployment, ensure that the client is routed to the same instance for the life of the session. You can set this option to Off for stateless applications.
+
+### HTTP version
+
+### Local Cache
+
+Azure App Service content is stored on Azure Storage and is surfaced up in a durable manner as a content share. However, some apps just need a high-performance, read-only content store that they can run with high availability. These apps can benefit from using local cache. Local cache is not recommended for content management sites such as WordPress.
+
+Local cache is not supported in function apps or containerized App Service apps, such as in Windows Containers or in App Service on Linux.
+
+
+## Differences between tiers
+
+### Configure autoscale
+
+### Vertical vs horizontal scaling
