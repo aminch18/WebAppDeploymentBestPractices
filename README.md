@@ -90,6 +90,8 @@ Keeps the app loaded even when there's no traffic. It's required for continuous 
 
 In a multi-instance deployment, ensure that the client is routed to the same instance for the life of the session. You can set this option to Off for stateless applications.
 
+There are situations where in keeping the affinity is not desired. For example, if you are getting way too many requests from a single user and the requests going to the same web server instance can overload it. If maintaining session affinity is not important and you want better load balancing , it is recommended to disable session affinity cookie. 
+
 ### HTTP version 2.0
 
 The primary goals for HTTP/2 are to reduce latency by enabling full request and response multiplexing, minimize protocol overhead via efficient compression of HTTP header fields, and add support for request prioritization and server push.
@@ -102,10 +104,11 @@ The primary goals for HTTP/2 are to reduce latency by enabling full request and 
 
 ### Local Cache
 
-Azure App Service content is stored on Azure Storage and is surfaced up in a durable manner as a content share. However, some apps just need a high-performance, read-only content store that they can run with high availability. These apps can benefit from using local cache. Local cache is not recommended for content management sites such as WordPress.
+Local Cache is like a temporary area where the App service can store all the content related to the App Service. Instead of referring a shared location, the App Service stores all its content in each provisioned VM. So, if the App Service is being configured in 2 VMs, all the content would be copied in both the VMs. So, obviously reading the content from the local copy is better than reading them from a shared location and as a result, there would a bit of improvement of the performance when we enable the “App Service Local Cache” feature.
 
 Local cache is not supported in function apps or containerized App Service apps, such as in Windows Containers or in App Service on Linux.
 
+All deployments done by all different methods (FTP, Web Deploy etc.) are pointed to the Shared Content area. So, in order to get these changes reflected to the local cache, the App Service needs to be restarted in order to get the new changes reflected.
 
 ## Differences between tiers
 
