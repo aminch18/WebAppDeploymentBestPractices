@@ -50,13 +50,5 @@ stages:
         location: 'North Europe'
         templateLocation: 'Linked artifact'
         csmFile: 'deployment/azuredeploy.appserviceoncontainers.json'
-        overrideParameters: '-acrName $(acrName) -image webappdeploymentdemoapp -TAG $(Build.SourceVersion)'
+        overrideParameters: '-acrName $(acrName) -image webappdeploymentdemoapp -tag $(Build.SourceVersion) -acrPassword $(acrPassword)'
         deploymentMode: 'Incremental'
-
-    # - task: AzureCLI@1
-    #   displayName: PullRole
-    #   inputs:
-    #     azureSubscription: AZURE_CREDENTIALS
-    #     scriptLocation: inlineScript
-    #     inlineScript: |
-    #       az role assignment create --assignee 3444b199-0f26-47cb-b62c-28aaad4d1894 --scope /subscriptions/ed9abfff-56b6-4ed3-b659-f66b213ab94a/resourceGroups/webappbestpractices-borjagr-1234/providers/Microsoft.ContainerRegistry/registries/webappbestpracticesacr --role AcrPull

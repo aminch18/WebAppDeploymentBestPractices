@@ -30,13 +30,15 @@
         "image": {
             "type": "string"
         },
-        "TAG": {
+        "tag": {
             "type": "string"
+        },
+        "acrPassword":{
+            "type" : "secureString"
         }
     },
     "variables": {
         "hostingPlanName": "[concat('sp-', parameters('webAppName'))]",
-        "acrPullRole": "7f951dda-4ed3-4680-a7ca-43fe172d538d"
     },
     "resources": [
         {
@@ -50,7 +52,7 @@
             ],
             "properties": {
                 "siteConfig": {
-                    "linuxFxVersion": "[concat('DOCKER|')]",
+                    "linuxFxVersion": "[concat('DOCKER|', parameters('acrName'),'.azurecr.io/', parameters('image'), ':', '15fe980bbc1edf77321d830868c28338de1d6f7d')]",
                     "alwaysOn": "[parameters('alwaysOn')]",
                     "http20Enabled": true,
                     "appSettings": [
@@ -63,8 +65,12 @@
                             "value": "[concat('https://',parameters('acrName'),'.azurecr.io')]"
                         },
                         {
-                            "name": "DOCKER_CUSTOM_IMAGE_NAME",
-                            "value": "[concat(parameters('acrName'),'.azurecr.io/', parameters('image'), ':', '15fe980bbc1edf77321d830868c28338de1d6f7d')]"
+                            "name": "DOCKER_REGISTRY_SERVER_USERNAME",
+                            "value": "[parameters('acrName')]"
+                        },
+                        {
+                            "name": "DOCKER_REGISTRY_SERVER_PASSWORD ",
+                            "value": "[parameters('acrPassword')]"
                         }
                     ]
                 },
@@ -90,19 +96,6 @@
             "properties": {
                 "reserved": true
             }
-        },
-        {
-            "type": "Microsoft.Authorization/roleAssignments",
-            "apiVersion": "2018-09-01-preview",
-            "scope": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', resourceGroup().id, '/providers/Microsoft.ContainerRegistry/registries/', parameters('acrName'))]",
-            "name": "[guid(resourceGroup().id)]",
-            "properties": {
-                "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', variables('acrPullRole'))]",
-                "principalId": "[reference(resourceId('Microsoft.Web/sites', parameters('webAppName')), '2016-08-01', 'Full').identity.principalId]",
-            },
-            "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('webAppName'))]"
-            ]
         }
     ]
 }
