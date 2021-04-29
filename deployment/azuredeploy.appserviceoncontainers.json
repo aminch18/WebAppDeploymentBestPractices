@@ -24,7 +24,7 @@
         },
         "webAppName": {
             "type": "string",
-            "defaultValue": "[concat('demowebapponcontainers-', uniqueString(resourceGroup().id))]",
+            "defaultValue": "[concat('demoapp-', uniqueString(resourceGroup().id))]",
             "minLength": 2
         },
         "image": {
@@ -50,7 +50,9 @@
             ],
             "properties": {
                 "siteConfig": {
+                    "linuxFxVersion": "[concat('DOCKER|', parameters('acrName'),'.azurecr.io/', parameters('image'), ':', '15fe980bbc1edf77321d830868c28338de1d6f7d')]",
                     "alwaysOn": "[parameters('alwaysOn')]",
+                    "http20Enabled": true,
                     "appSettings": [
                         {
                             "name": "WEBSITES_ENABLE_APP_SERVICE_STORAGE",
@@ -68,7 +70,8 @@
                 },
                 "acrUseManagedIdentityCreds": true,
                 "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]",
-                "clientAffinityEnabled": false
+                "clientAffinityEnabled": false,
+                "httpsOnly": true
             },
             "identity": {
                 "type": "SystemAssigned"
@@ -94,7 +97,8 @@
             "name": "[guid(resourceGroup().id)]",
             "properties": {
                 "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', variables('acrPullRole'))]",
-                "principalId": "[reference(resourceId('Microsoft.Web/sites', parameters('webAppName')), '2016-08-01', 'Full').identity.principalId]"
+                "principalId": "[reference(resourceId('Microsoft.Web/sites', parameters('webAppName')), '2016-08-01', 'Full').identity.principalId]",
+                "scope": "/subscriptions/ed9abfff-56b6-4ed3-b659-f66b213ab94a/resourceGroups/webappbestpractices-borjagr-1234/providers/Microsoft.ContainerRegistry/registries/webappbestpracticesacr"
             },
             "dependsOn": [
                 "[resourceId('Microsoft.Web/sites', parameters('webAppName'))]"
