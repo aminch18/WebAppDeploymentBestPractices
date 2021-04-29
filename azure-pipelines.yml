@@ -1,0 +1,60 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+stages:
+- stage: Build
+  displayName: Build and push stage
+  jobs:  
+  - job: Build
+    displayName: Build job
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    
+    - task: AzureCLI@1
+      displayName: Acr name
+      inputs:
+        azureSubscription: AZURE_CREDENTIALS
+        scriptLocation: inlineScript
+        inlineScript: |
+            az acr login -n webappbestpracticesacr 
+            echo "##vso[task.setvariable variable=ACR_NAME]$ACR_NAME"
+            
+    - task: Bash@3
+      displayName: Build and Push App
+      inputs:
+        targetType: 'inline'
+        workingDirectory: "src"
+        script: |
+             docker build -f Dockerfile -t webappbestpracticesacr.azurecr.io/webappdeploymentdemoapp:$(Build.SourceVersion) .
+             docker push webappbestpracticesacr.azurecr.io/webappdeploymentdemoapp:$(Build.SourceVersion)
+
+- stage: DEV
+  displayName: Deploy to dev
+  jobs:  
+  - job: Dev
+    displayName: Deploy dec
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - task: AzureResourceManagerTemplateDeployment@3
+      inputs:
+        deploymentScope: 'Resource Group'
+        azureResourceManagerConnection: 'AZURE_CREDENTIALS'
+        subscriptionId: 'ed9abfff-56b6-4ed3-b659-f66b213ab94a'
+        action: 'Create Or Update Resource Group'
+        resourceGroupName: 'webappbestpractices-borjagr-1234'
+        location: 'North Europe'
+        templateLocation: 'Linked artifact'
+        csmFile: 'deployment/azuredeploy.appserviceoncontainers.json'
+        deploymentMode: 'Incremental'
+    - task: AzureWebAppContainer@1
+      inputs:
+        azureSubscription: 'AZURE_CREDENTIALS'
+        appName: 'demowebapponcontainers-1234'
+        containers: 'webappdeploymentdemoapp:$(Build.SourceVersion)'
