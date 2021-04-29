@@ -33,10 +33,10 @@ stages:
     #          docker push $(acrName).azurecr.io/webappdeploymentdemoapp:$(Build.SourceVersion)
 
 - stage: DEV
-  displayName: Deploy to dev
+  displayName: DEV
   jobs:  
   - job: Dev
-    displayName: Deploy dec
+    displayName: Deploy
     pool:
       vmImage: ubuntu-latest
     steps:
@@ -50,10 +50,5 @@ stages:
         location: 'North Europe'
         templateLocation: 'Linked artifact'
         csmFile: 'deployment/azuredeploy.appserviceoncontainers.json'
-        overrideParameters: '-acrName $(acrName) -image webappdeploymentdemoapp -TAG $(Build.SourceVersion))'
+        overrideParameters: '-acrName $(acrName) -image webappdeploymentdemoapp -TAG $(Build.SourceVersion)'
         deploymentMode: 'Incremental'
-    - task: AzureWebAppContainer@1
-      inputs:
-        azureSubscription: 'AZURE_CREDENTIALS'
-        appName: 'demowebapponcontainers-z6j3ofqieq6og'
-        containers: 'webappdeploymentdemoapp:$(Build.SourceVersion)'
