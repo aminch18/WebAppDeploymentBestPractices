@@ -21,6 +21,7 @@ stages:
       inputs:
         command: 'build'
         configuration: $(buildConfiguration)
+        workingDirectory: src
 
     - task: DotNetCoreCLI@2
       inputs:
@@ -28,6 +29,7 @@ stages:
         publishWebProjects: True
         arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
         zipAfterPublish: True
+        workingDirectory: src
 
     - task: PublishBuildArtifacts@1
       inputs:
