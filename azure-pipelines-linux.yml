@@ -68,4 +68,4 @@ stages:
         azureSubscription: 'AZURE_CREDENTIALS'
         appType: 'webAppLinux'
         WebAppName: 'demowebapp-z6j3ofqieq6og'
-        packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+        packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
