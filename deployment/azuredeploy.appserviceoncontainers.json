@@ -43,7 +43,6 @@
                 "[resourceId('Microsoft.Web/serverfarms/', variables('hostingPlanName'))]"
             ],
             "properties": {
-                "name": "[variables('hostingPlanName')]",
                 "siteConfig": {
                     // "linuxFxVersion": "[concat('DOCKER|', parameters('acrName'),'/', parameters('image'), ':', parameters('TAG'))]",
                     "alwaysOn": "[parameters('alwaysOn')]",
