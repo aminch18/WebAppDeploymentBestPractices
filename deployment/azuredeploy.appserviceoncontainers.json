@@ -56,6 +56,10 @@
                         {
                             "name": "WEBSITES_ENABLE_APP_SERVICE_STORAGE",
                             "value": "false"
+                        },
+                        {
+                            "name": "DOCKER_REGISTRY_SERVER_URL",
+                            "value": "[concat('https://',parameters('acrName'),'.azurecr.io')]"
                         }
                     ]
                 },
