@@ -85,7 +85,7 @@
             "name": "[guid(resourceGroup().id)]",
             "properties": {
                 "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', variables('acrPullRole'))]",
-                "principalId": "[reference(resourceId('Microsoft.Web/sites', parameters('webAppName')), '2016-08-01', 'Full').identity.principalId]",
+                "principalId": "[reference(resourceId('Microsoft.Web/sites', parameters('webAppName')), '2016-08-01', 'Full').identity.principalId]"
             },
             "dependsOn": [
                 "[resourceId('Microsoft.Web/sites', parameters('webAppName'))]"
