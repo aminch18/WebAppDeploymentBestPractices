@@ -50,7 +50,7 @@
             ],
             "properties": {
                 "siteConfig": {
-                    "linuxFxVersion": "[concat('DOCKER|', 'https://',parameters('acrName'),'.azurecr.io/', parameters('image'), ':', '15fe980bbc1edf77321d830868c28338de1d6f7d')]",
+                    "linuxFxVersion": "[concat('DOCKER|',parameters('acrName'),'.azurecr.io/', parameters('image'), ':', '15fe980bbc1edf77321d830868c28338de1d6f7d')]",
                     "alwaysOn": "[parameters('alwaysOn')]",
                     "appSettings": [
                         {
