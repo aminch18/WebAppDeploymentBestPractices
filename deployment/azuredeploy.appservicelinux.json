@@ -82,13 +82,21 @@
         "siteConfig": {
           "linuxFxVersion": "[parameters('linuxFxVersion')]",
           "alwaysOn": "[parameters('alwaysOn')]",
-          "http20Enabled": "[parameters('http20Enabled')]"
+          "http20Enabled": "[parameters('http20Enabled')]",
+          "appSettings": [
+                        {
+                            "name": "WEBSITE_LOCAL_CACHE_OPTION",
+                            "value": "Always"
+                        },
+                        {
+                            "name": "WEBSITE_LOCAL_CACHE_SIZEINMB",
+                            "value": "1000"
+                        }
+                    ]
         },
         "clientAffinityEnabled": "[parameters('clientAffinityEnabled')]",
         "httpsOnly": "[parameters('httpsOnly')]",
-        "healthCheckPath": "[parameters('healthCheckPath')]",
-        "WEBSITE_LOCAL_CACHE_OPTION": "Always",
-        "WEBSITE_LOCAL_CACHE_SIZEINMB": "1000"
+        "healthCheckPath": "[parameters('healthCheckPath')]"
       }
     }
   ]
