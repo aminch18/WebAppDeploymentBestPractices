@@ -1,0 +1,69 @@
+trigger:
+- main
+
+stages:
+- stage: Build
+  displayName: Build and push stage
+  jobs:  
+  - job: Build
+    displayName: Build job
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    
+    - task: UseDotNet@2
+      inputs:
+        version: '5.0.x'
+        includePreviewVersions: true # Required for preview versions
+      
+    - task: DotNetCoreCLI@2
+      displayName: 'dotnet build'
+      inputs:
+        command: 'build'
+        configuration: $(buildConfiguration)
+
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: publish
+        publishWebProjects: True
+        arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+        zipAfterPublish: True
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
+        artifactName: drop
+
+- stage: DEV
+  displayName: DEV
+  jobs:  
+  - job: Dev
+    displayName: Deploy
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - task: AzureResourceManagerTemplateDeployment@3
+      inputs:
+        deploymentScope: 'Resource Group'
+        azureResourceManagerConnection: 'AZURE_CREDENTIALS'
+        subscriptionId: 'ed9abfff-56b6-4ed3-b659-f66b213ab94a'
+        action: 'Create Or Update Resource Group'
+        resourceGroupName: 'webappbestpractices-borjagr-1234'
+        location: 'North Europe'
+        templateLocation: 'Linked artifact'
+        csmFile: 'deployment/azuredeploy.appservicelinux.json'
+        overrideParameters: ''
+        deploymentMode: 'Incremental'
+
+    # download the artifact drop from the previous job
+    - task: DownloadBuildArtifacts@0
+      inputs:
+        artifactName: drop
+
+    - task: AzureRmWebAppDeployment@4
+      inputs:
+        ConnectionType: 'AzureRM'
+        azureSubscription: 'AZURE_CREDENTIALS'
+        appType: 'webAppLinux'
+        WebAppName: 'demowebapp-z6j3ofqieq6og'
+        packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
