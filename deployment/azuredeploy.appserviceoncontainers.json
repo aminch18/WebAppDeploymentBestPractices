@@ -98,7 +98,7 @@
             "scope": "/subscriptions/ed9abfff-56b6-4ed3-b659-f66b213ab94a/resourceGroups/webappbestpractices-borjagr-1234/providers/Microsoft.ContainerRegistry/registries/webappbestpracticesacr",
             "properties": {
                 "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', variables('acrPullRole'))]",
-                "principalId": "[reference(resourceId('Microsoft.Web/sites', parameters('webAppName')), '2016-08-01', 'Full').identity.principalId]",
+                "principalId": "[reference(resourceId('Microsoft.Web/sites', parameters('webAppName')), '2016-08-01', 'Full').identity.principalId]"
             },
             "dependsOn": [
                 "[resourceId('Microsoft.Web/sites', parameters('webAppName'))]"
