@@ -57,15 +57,15 @@
                         {
                             "name": "WEBSITES_ENABLE_APP_SERVICE_STORAGE",
                             "value": "false"
-                        },
-                        {
-                            "name": "DOCKER_REGISTRY_SERVER_URL",
-                            "value": "[concat('https://',parameters('acrName'),'.azurecr.io')]"
-                        },
-                        {
-                            "name": "DOCKER_CUSTOM_IMAGE_NAME",
-                            "value": "[concat(parameters('acrName'),'.azurecr.io/', parameters('image'), ':', '15fe980bbc1edf77321d830868c28338de1d6f7d')]"
                         }
+                        // {
+                        //     "name": "DOCKER_REGISTRY_SERVER_URL",
+                        //     "value": "[concat('https://',parameters('acrName'),'.azurecr.io')]"
+                        // },
+                        // {
+                        //     "name": "DOCKER_CUSTOM_IMAGE_NAME",
+                        //     "value": "[concat(parameters('acrName'),'.azurecr.io/', parameters('image'), ':', '15fe980bbc1edf77321d830868c28338de1d6f7d')]"
+                        // }
                     ]
                 },
                 "acrUseManagedIdentityCreds": true,
