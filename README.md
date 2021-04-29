@@ -86,11 +86,19 @@ https://marketplace.visualstudio.com/items?itemName=miguelcruz.vsts-smoke-web-te
 
 Keeps the app loaded even when there's no traffic. It's required for continuous WebJobs or for WebJobs that are triggered using a CRON expression.
 
+Demo:
+
+Configure **alwaysOn**.
+
 ### ARR affinity
 
 In a multi-instance deployment, ensure that the client is routed to the same instance for the life of the session. You can set this option to Off for stateless applications.
 
 There are situations where in keeping the affinity is not desired. For example, if you are getting way too many requests from a single user and the requests going to the same web server instance can overload it. If maintaining session affinity is not important and you want better load balancing , it is recommended to disable session affinity cookie. 
+
+Demo:
+
+Configure **clientAffinityEnabled** to false.
 
 ### HTTP version 2.0
 
@@ -102,13 +110,25 @@ The primary goals for HTTP/2 are to reduce latency by enabling full request and 
 - Has one TCP/IP connection
 - Uses header compression to reduce overhead
 
+Demo:
+
+Configure **http20Enabled**.
+
 ### Local Cache
 
-Local Cache is like a temporary area where the App service can store all the content related to the App Service. Instead of referring a shared location, the App Service stores all its content in each provisioned VM. So, if the App Service is being configured in 2 VMs, all the content would be copied in both the VMs. So, obviously reading the content from the local copy is better than reading them from a shared location and as a result, there would a bit of improvement of the performance when we enable the “App Service Local Cache” feature.
+App Service provides a quick way to deploy code apps and run them in a fully managed cloud environment.
 
-Local cache is not supported in function apps or containerized App Service apps, such as in Windows Containers or in App Service on Linux.
+Behind the scenes, during the code deployment step, the code is copied to a CIFS (Network File System base) volume, which is then consumed when the app runtime starts up. Under default configuration, the exact same network share is mounted to the runtime. This design has the advantage that the application runtime in App Service has a persistent R/W storage share offered by default, which is a core requirements of frameworks like WordPress.
+
+However, most applications do not require a persistent storage, and some application may favor faster performance of code on a local storage as opposed to remote storage. To optimize for this kind of applications, we have built a new feature called App Cache.
+
+**WEBSITES_ENABLE_APP_CACHE**=true.
 
 All deployments done by all different methods (FTP, Web Deploy etc.) are pointed to the Shared Content area. So, in order to get these changes reflected to the local cache, the App Service needs to be restarted in order to get the new changes reflected.
+
+Demo:
+
+Add the sticky app setting WEBSITE_LOCAL_CACHE_OPTION with the value Always to your Production slot. If you're using WEBSITE_LOCAL_CACHE_SIZEINMB, also add it as a sticky setting to your Production slot.
 
 ## Differences between tiers
 
@@ -118,7 +138,7 @@ All deployments done by all different methods (FTP, Web Deploy etc.) are pointed
 
 - Isolated: This tier runs dedicated Azure VMs on dedicated Azure Virtual Networks. It provides network isolation on top of compute isolation to your apps. It provides the maximum scale-out capabilities.
 
-https://azure.microsoft.com/en-us/pricing/details/
+https://medium.com/@wely.lau/should-you-upgrade-from-app-service-standard-plan-to-premium-v2-6acb03d4f48
 
 ### Scale up (Vertical scale)
 

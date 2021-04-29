@@ -18,33 +18,19 @@
             "type": "string",
             "defaultValue": "S1"
         },
-        "acrUsername": {
-            "type": "string",
-            "defaultValue": ""
-        },
-        "acrPassword": {
-            "type": "string",
-            "defaultValue": ""
-        },
-        "acrLogin": {
+        "acrName": {
             "type": "string",
             "defaultValue": ""
         },
         "webAppName": {
-          "type": "string",
-          "defaultValue": "[concat('demowebapponcontainers-', uniqueString(resourceGroup().id))]",
-          "minLength": 2
-        },
-        "image": {
-          "type": "string",
-          "defaultValue": "demoapp"
-        },
-        "TAG": {
-          "type": "string"
+            "type": "string",
+            "defaultValue": "[concat('demowebapponcontainers-', uniqueString(resourceGroup().id))]",
+            "minLength": 2
         }
-      },
+    },
     "variables": {
-        "hostingPlanName": "[concat('sp-', parameters('webAppName'))]"
+        "hostingPlanName": "[concat('sp-', parameters('webAppName'))]",
+        "acrPullRole": "7f951dda-4ed3-4680-a7ca-43fe172d538d"
     },
     "resources": [
         {
@@ -58,30 +44,26 @@
             ],
             "properties": {
                 "name": "[variables('hostingPlanName')]",
-              "siteConfig": {
-                //"linuxFxVersion": "[concat('DOCKER|', parameters('acrLogin'),'/', parameters('image'), ':', parameters('TAG'))]",
-                "alwaysOn": "[parameters('alwaysOn')]",
-                "appSettings": [
-                  {
-                    "name": "WEBSITES_ENABLE_APP_SERVICE_STORAGE",
-                    "value": "false"
-                  },
-                  {
-                    "name": "DOCKER_REGISTRY_SERVER_USERNAME",
-                    "value": "[parameters('acrUsername')]"
-                  },
-                  {
-                    "name": "DOCKER_REGISTRY_SERVER_PASSWORD",
-                    "value": "[parameters('acrPassword')]"
-                  },
-                  {
-                    "name": "DOCKER_REGISTRY_SERVER_URL",
-                    "value": "[concat('https://',parameters('acrUsername'),'.azurecr.io')]"
-                  }
-                ]
-              },
+                "siteConfig": {
+                    // "linuxFxVersion": "[concat('DOCKER|', parameters('acrName'),'/', parameters('image'), ':', parameters('TAG'))]",
+                    "alwaysOn": "[parameters('alwaysOn')]",
+                    "appSettings": [
+                        {
+                            "name": "WEBSITES_ENABLE_APP_SERVICE_STORAGE",
+                            "value": "false"
+                        }
+                        // ,
+                        // {
+                        //     "name": "DOCKER_REGISTRY_SERVER_URL",
+                        //     "value": "[concat('https://',parameters('acrName'),'.azurecr.io')]"
+                        // }
+                    ]
+                },
                 "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]",
                 "clientAffinityEnabled": false
+            },
+            "identity": {
+                "type": "SystemAssigned"
             }
         },
         {
@@ -97,6 +79,19 @@
             "properties": {
                 "reserved": true
             }
+        },
+        {
+            "type": "Microsoft.Authorization/roleAssignments",
+            "apiVersion": "2018-09-01-preview",
+            "name": "[guid(resourceGroup().id)]",
+            "properties": {
+                "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', variables('acrPullRole'))]",
+                "principalId": "[reference(resourceId('Microsoft.Web/sites', parameters('webAppName')), '2016-08-01', 'Full').identity.principalId]",
+                "scope": "[resourceId('Microsoft.ContainerRegistry/registries/', parameters('acrName'))]"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('webAppName'))]"
+            ]
         }
     ]
 }
