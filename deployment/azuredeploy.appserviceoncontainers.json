@@ -26,6 +26,12 @@
             "type": "string",
             "defaultValue": "[concat('demowebapponcontainers-', uniqueString(resourceGroup().id))]",
             "minLength": 2
+        },
+        "image": {
+            "type": "string"
+        },
+        "TAG": {
+            "type": "string"
         }
     },
     "variables": {
@@ -44,7 +50,7 @@
             ],
             "properties": {
                 "siteConfig": {
-                    "linuxFxVersion": "[concat('DOCKER|', parameters('acrName'),'/', parameters('imageName'), ':', parameters('TAG'))]",
+                    "linuxFxVersion": "[concat('DOCKER|', parameters('acrName'),'/', parameters('image'), ':', parameters('TAG'))]",
                     "alwaysOn": "[parameters('alwaysOn')]",
                     "appSettings": [
                         {
