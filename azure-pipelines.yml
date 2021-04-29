@@ -50,10 +50,10 @@ stages:
         location: 'North Europe'
         templateLocation: 'Linked artifact'
         csmFile: 'deployment/azuredeploy.appserviceoncontainers.json'
-        overrideParameters: '-acrName $(acrName)'
+        overrideParameters: '-acrName $(acrName) -image webappdeploymentdemoapp -TAG $(Build.SourceVersion))'
         deploymentMode: 'Incremental'
     - task: AzureWebAppContainer@1
       inputs:
         azureSubscription: 'AZURE_CREDENTIALS'
         appName: 'demowebapponcontainers-z6j3ofqieq6og'
-        containers: '$(acrName):$(Build.SourceVersion)'
+        containers: 'webappdeploymentdemoapp:$(Build.SourceVersion)'

@@ -44,18 +44,13 @@
             ],
             "properties": {
                 "siteConfig": {
-                    // "linuxFxVersion": "[concat('DOCKER|', parameters('acrName'),'/', parameters('image'), ':', parameters('TAG'))]",
+                    "linuxFxVersion": "[concat('DOCKER|', parameters('acrName'),'/', parameters('imageName'), ':', parameters('TAG'))]",
                     "alwaysOn": "[parameters('alwaysOn')]",
                     "appSettings": [
                         {
                             "name": "WEBSITES_ENABLE_APP_SERVICE_STORAGE",
                             "value": "false"
                         }
-                        // ,
-                        // {
-                        //     "name": "DOCKER_REGISTRY_SERVER_URL",
-                        //     "value": "[concat('https://',parameters('acrName'),'.azurecr.io')]"
-                        // }
                     ]
                 },
                 "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]",
