@@ -49,19 +49,5 @@
                 "publicNetworkAccess": "Enabled"
             }
         }
-    ],
-  "outputs": {
-    "acrLoginServer": {
-      "value": "[reference(resourceId('Microsoft.ContainerRegistry/registries',parameters('acrName')),'2019-05-01').loginServer]",
-      "type": "string"
-    },
-    "registryUsername": {
-      "value": "[parameters('acrName')]",
-      "type": "string"
-    },
-    "registryPassword": {
-      "value": "[listCredentials(resourceId('Microsoft.ContainerRegistry/registries',parameters('acrName')),'2019-05-01').passwords[0].value]",
-      "type": "string"
-    }
-  }
+    ]
 }

@@ -65,5 +65,5 @@ stages:
         ConnectionType: 'AzureRM'
         azureSubscription: 'AZURE_CREDENTIALS'
         appType: 'webAppLinux'
-        WebAppName: 'demowebapp-z6j3ofqieq6og'
+        WebAppName: 'pc-dev-apponlinux'
         packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'

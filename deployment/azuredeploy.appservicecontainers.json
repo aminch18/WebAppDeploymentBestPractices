@@ -6,10 +6,6 @@
             "type": "string",
             "defaultValue": "[resourceGroup().location]"
         },
-        "alwaysOn": {
-            "type": "bool",
-            "defaultValue": true
-        },
         "appServiceSku": {
             "type": "string",
             "defaultValue": "Standard"
@@ -24,8 +20,7 @@
         },
         "webAppName": {
             "type": "string",
-            "defaultValue": "[concat('demoapp-', uniqueString(resourceGroup().id))]",
-            "minLength": 2
+            "defaultValue": "apponlinux"
         },
         "image": {
             "type": "string"
@@ -33,17 +28,34 @@
         "tag": {
             "type": "string"
         },
-        "acrPassword":{
-            "type" : "secureString"
+        "acrPassword": {
+            "type": "secureString"
+        },
+        "healthCheckPath": {
+            "type": "string",
+            "defaultValue": "/api/health"
+        },
+        "dnsPrefix": {
+            "type": "string",
+            "defaultValue": "pc"
+        },
+        "environment": {
+            "type": "string",
+            "defaultValue": "dev"
+        },
+        "servicePlanName": {
+            "type": "string",
+            "defaultValue": "plan"
         }
     },
     "variables": {
-        "hostingPlanName": "[concat('sp-', parameters('webAppName'))]"
+        "hostingPlanName": "[concat(parameters('dnsPrefix'), '-', parameters('environment'), '-', parameters('servicePlanName'))]",
+        "webAppName": "[concat(parameters('dnsPrefix'), '-', parameters('environment'), '-', parameters('webAppName'))]"
     },
     "resources": [
         {
-            "apiVersion": "2020-06-01",
-            "name": "[parameters('webAppName')]",
+            "apiVersion": "2018-02-01",
+            "name": "[variables('webAppName')]",
             "type": "Microsoft.Web/sites",
             "kind": "app,linux,container",
             "location": "[parameters('location')]",
@@ -51,9 +63,12 @@
                 "[resourceId('Microsoft.Web/serverfarms/', variables('hostingPlanName'))]"
             ],
             "properties": {
+                "clientAffinityEnabled": false,
+                "httpsOnly": true,
+                "healthCheckPath": "[parameters('healthCheckPath')]",
                 "siteConfig": {
                     "linuxFxVersion": "[concat('DOCKER|', parameters('acrName'),'.azurecr.io/', parameters('image'), ':', parameters('tag'))]",
-                    "alwaysOn": "[parameters('alwaysOn')]",
+                    "alwaysOn": true,
                     "http20Enabled": true,
                     "appSettings": [
                         {
@@ -71,20 +86,18 @@
                         {
                             "name": "DOCKER_REGISTRY_SERVER_PASSWORD ",
                             "value": "[parameters('acrPassword')]"
+                        },
+                        {
+                            "name": "WEBSITES_ENABLE_APP_CACHE",
+                            "value": "true"
                         }
                     ]
                 },
-                "acrUseManagedIdentityCreds": true,
-                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]",
-                "clientAffinityEnabled": false,
-                "httpsOnly": true
-            },
-            "identity": {
-                "type": "SystemAssigned"
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]"
             }
         },
         {
-            "apiVersion": "2020-06-01",
+            "apiVersion": "2018-02-01",
             "name": "[variables('hostingPlanName')]",
             "type": "Microsoft.Web/serverfarms",
             "location": "[parameters('location')]",

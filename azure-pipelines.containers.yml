@@ -44,6 +44,6 @@ stages:
         resourceGroupName: 'webappbestpractices-borjagr-1234'
         location: 'North Europe'
         templateLocation: 'Linked artifact'
-        csmFile: 'deployment/azuredeploy.appserviceoncontainers.json'
+        csmFile: 'deployment/azuredeploy.appservicecontainers.json'
         overrideParameters: '-acrName $(acrName) -image webappdeploymentdemoapp -tag $(Build.SourceVersion) -acrPassword $(acrPassword)'
         deploymentMode: 'Incremental'
