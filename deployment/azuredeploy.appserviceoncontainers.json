@@ -38,7 +38,7 @@
         }
     },
     "variables": {
-        "hostingPlanName": "[concat('sp-', parameters('webAppName'))]",
+        "hostingPlanName": "[concat('sp-', parameters('webAppName'))]"
     },
     "resources": [
         {
