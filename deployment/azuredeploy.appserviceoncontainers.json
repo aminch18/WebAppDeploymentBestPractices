@@ -50,7 +50,7 @@
             ],
             "properties": {
                 "siteConfig": {
-                    "linuxFxVersion": "[concat('DOCKER|', parameters('acrName'),'/', parameters('image'), ':', parameters('TAG'))]",
+                    "linuxFxVersion": "[concat('DOCKER|', parameters('acrName'),'azureacr.io/', parameters('image'), ':', parameters('TAG'))]",
                     "alwaysOn": "[parameters('alwaysOn')]",
                     "appSettings": [
                         {
