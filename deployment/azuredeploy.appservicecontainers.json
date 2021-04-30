@@ -67,7 +67,7 @@
                 "httpsOnly": true,
                 "healthCheckPath": "[parameters('healthCheckPath')]",
                 "siteConfig": {
-                    //"linuxFxVersion": "[concat('DOCKER|', parameters('acrName'),'.azurecr.io/', parameters('image'), ':', parameters('tag'))]",
+                    "linuxFxVersion": "[concat('DOCKER|', parameters('acrName'),'.azurecr.io/', parameters('image'), ':', parameters('tag'))]",
                     "alwaysOn": true,
                     "http20Enabled": true,
                     "appSettings": [
@@ -86,10 +86,6 @@
                         {
                             "name": "DOCKER_REGISTRY_SERVER_PASSWORD",
                             "value": "[parameters('acrPassword')]"
-                        },
-                        {
-                            "name": "DOCKER_CUSTOM_IMAGE_NAME ",
-                            "value": "[concat(parameters('acrName'),'.azurecr.io/', parameters('image'), ':', parameters('tag'))]"
                         },
                         {
                             "name": "WEBSITES_ENABLE_APP_CACHE",
