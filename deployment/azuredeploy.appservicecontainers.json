@@ -67,7 +67,7 @@
                 "httpsOnly": true,
                 "healthCheckPath": "[parameters('healthCheckPath')]",
                 "siteConfig": {
-                    "linuxFxVersion": "[concat('DOCKER|', parameters('acrName'),'.azurecr.io/', parameters('image'), ':', parameters('tag'))]",
+                    //"linuxFxVersion": "[concat('DOCKER|', parameters('acrName'),'.azurecr.io/', parameters('image'), ':', parameters('tag'))]",
                     "alwaysOn": true,
                     "http20Enabled": true,
                     "appSettings": [
