@@ -69,3 +69,4 @@ stages:
         appType: 'webAppLinux'
         WebAppName: 'pc-dev-apponlinux'
         packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
+        DeploymentType: zipDeploy
