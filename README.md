@@ -26,7 +26,9 @@ App Service supports the following deployment mechanisms:
 
 ### Zip Deploy
 
-Expects a .zip deployment package and deploys the file contents to the wwwroot folder of the App Service or Function App in Azure. This option overwrites all existing contents in the wwwroot folder. For more information, see Zip deployment for Azure Functions.
+ZipDeploy (as name stated) is intended for xcopy or ftp style deployment. It unzips the artifacts and lay them out exactly to d:\home\site\wwwroot. You can use any tooling (such as one coming with Windows) to zip your content.
+
+By default, the Zip package will be deflated to d:\home\site\wwwroot as is. Optionally, to allow Zip package deployed with ZipDeploy to mount as virtual filesystem directly without deflating or extracting, do set appSettings WEBSITE_RUN_FROM_PACKAGE=1. This setting does **not** work with MSDeploy.
 
 ### Run From Package
 

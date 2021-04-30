@@ -123,18 +123,6 @@
       "kind": "app,linux",
       "properties": {
         "enabled": true,
-        "hostNameSslStates": [
-          {
-            "name": "pc-dev-apponlinux-slot.azurewebsites.net",
-            "sslState": "Disabled",
-            "hostType": "Standard"
-          },
-          {
-            "name": "pc-dev-apponlinux-slot.scm.azurewebsites.net",
-            "sslState": "Disabled",
-            "hostType": "Repository"
-          }
-        ],
         "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]",
         "siteConfig": {},
         "clientAffinityEnabled": false,

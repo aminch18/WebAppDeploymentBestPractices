@@ -53,7 +53,7 @@ stages:
         resourceGroupName: 'webappbestpractices-borjagr-1234'
         location: 'North Europe'
         templateLocation: 'Linked artifact'
-        csmFile: 'deployment/azuredeploy.appservicelinux.json'
+        csmFile: 'deployment/azuredeploy.apptraining.json'
         overrideParameters: ''
         deploymentMode: 'Incremental'
 
@@ -67,19 +67,8 @@ stages:
         ConnectionType: 'AzureRM'
         azureSubscription: 'AZURE_CREDENTIALS'
         appType: 'webAppLinux'
-        WebAppName: 'pc-dev-apponlinux'
-        resourceGroupName: 'webappbestpractices-borjagr-1234'
+        WebAppName: 'pc-dev-apptraining'
         deployToSlotOrASE: true
         SlotName: 'slot'
         packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
         DeploymentType: zipDeploy
-  
-    - task: AzureAppServiceManage@0
-      inputs:
-        azureSubscription: 'AZURE_CREDENTIALS'
-        Action: 'Swap Slots'
-        WebAppName: 'pc-dev-apponlinux'
-        ResourceGroupName: 'webappbestpractices-borjagr-1234'
-        SourceSlot: 'slot'
-        SwapWithProduction: true
-
