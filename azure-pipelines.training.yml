@@ -3,7 +3,7 @@ trigger:
 
 stages:
 - stage: Build
-  displayName: Build and push stage
+  displayName: Build
   jobs:  
   - job: Build
     displayName: Build job
@@ -68,7 +68,6 @@ stages:
         azureSubscription: 'AZURE_CREDENTIALS'
         appType: 'webAppLinux'
         WebAppName: 'pc-dev-apptraining'
-        deployToSlotOrASE: true
-        SlotName: 'slot'
         packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
         DeploymentType: zipDeploy
+        ResourceGroupName: 'webappbestpractices-borjagr-1234'
