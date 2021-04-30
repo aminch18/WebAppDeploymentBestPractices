@@ -146,7 +146,7 @@ https://medium.com/@wely.lau/should-you-upgrade-from-app-service-standard-plan-t
 
 Get more CPU, memory, disk space, and extra features like dedicated virtual machines (VMs), custom domains and certificates, staging slots, autoscaling, and more. You scale up by changing the pricing tier of the App Service plan that your app belongs to.
 
-### Scale up (Horizontal scale)
+### Scale out (Horizontal scale)
 
 Increase the number of VM instances that run your app. You can scale out to as many as 30 instances, depending on your pricing tier. App Service Environments in Isolated tier further increases your scale-out count to 100 instances. 
 
