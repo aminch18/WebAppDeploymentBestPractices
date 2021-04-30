@@ -68,5 +68,8 @@ stages:
         azureSubscription: 'AZURE_CREDENTIALS'
         appType: 'webAppLinux'
         WebAppName: 'pc-dev-apponlinux'
+        deployToSlotOrASE: true
+        SlotName: 'slot'
         packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
         DeploymentType: zipDeploy
+
