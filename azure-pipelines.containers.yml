@@ -2,30 +2,30 @@ trigger:
 - main
 
 stages:
-# - stage: Build
-#   displayName: Build and push stage
-#   jobs:  
-#   - job: Build
-#     displayName: Build job
-#     pool:
-#       vmImage: ubuntu-latest
-#     steps:
+- stage: Build
+  displayName: Build and push stage
+  jobs:  
+  - job: Build
+    displayName: Build job
+    pool:
+      vmImage: ubuntu-latest
+    steps:
     
-#     - task: AzureCLI@1
-#       displayName: Acr name
-#       inputs:
-#         azureSubscription: AZURE_CREDENTIALS
-#         scriptLocation: inlineScript
-#         inlineScript: |
-#             az acr login -n $(acrName)             
-#     - task: Bash@3
-#       displayName: Build and Push App
-#       inputs:
-#         targetType: 'inline'
-#         workingDirectory: "src"
-#         script: |
-#              docker build -f Dockerfile -t $(acrName).azurecr.io/webappdeploymentdemoapp:$(Build.SourceVersion) .
-#              docker push $(acrName).azurecr.io/webappdeploymentdemoapp:$(Build.SourceVersion)
+    - task: AzureCLI@1
+      displayName: Acr name
+      inputs:
+        azureSubscription: AZURE_CREDENTIALS
+        scriptLocation: inlineScript
+        inlineScript: |
+            az acr login -n $(acrName)             
+    - task: Bash@3
+      displayName: Build and Push App
+      inputs:
+        targetType: 'inline'
+        workingDirectory: "src"
+        script: |
+             docker build -f Dockerfile -t $(acrName).azurecr.io/webappdeploymentdemoapp:$(Build.SourceVersion) .
+             docker push $(acrName).azurecr.io/webappdeploymentdemoapp:$(Build.SourceVersion)
 
 - stage: DEV
   displayName: DEV
@@ -45,5 +45,5 @@ stages:
         location: 'North Europe'
         templateLocation: 'Linked artifact'
         csmFile: 'deployment/azuredeploy.appservicecontainers.json'
-        overrideParameters: '-acrName $(acrName) -image webappdeploymentdemoapp -tag f0c9ebf449cd2307b19ba2022c943c0e6cddf277 -acrPassword $(acrPassword)'
+        overrideParameters: '-acrName $(acrName) -image webappdeploymentdemoapp -tag $(Build.SourceVersion) -acrPassword $(acrPassword)'
         deploymentMode: 'Incremental'
