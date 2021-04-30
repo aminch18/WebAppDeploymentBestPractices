@@ -72,4 +72,13 @@ stages:
         SlotName: 'slot'
         packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
         DeploymentType: zipDeploy
+  
+    - task: AzureAppServiceManage@0
+      inputs:
+        azureSubscription: 'AZURE_CREDENTIALS'
+        Action: 'Swap Slots'
+        WebAppName: 'pc-dev-apponlinux'
+        ResourceGroupName: 'webappbestpractices-borjagr-1234'
+        SourceSlot: 'slot'
+        SwapWithProduction: true
 
