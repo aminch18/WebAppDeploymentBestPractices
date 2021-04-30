@@ -88,6 +88,10 @@
                             "value": "[parameters('acrPassword')]"
                         },
                         {
+                            "name": "DOCKER_CUSTOM_IMAGE_NAME ",
+                            "value": "[concat(parameters('acrName'),'.azurecr.io/', parameters('image'), ':', parameters('tag'))]"
+                        },
+                        {
                             "name": "WEBSITES_ENABLE_APP_CACHE",
                             "value": "true"
                         }
