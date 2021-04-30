@@ -53,7 +53,7 @@ stages:
         resourceGroupName: 'webappbestpractices-borjagr-1234'
         location: 'North Europe'
         templateLocation: 'Linked artifact'
-        csmFile: 'deployment/azuredeploy.apptraining.json'
+        csmFile: 'deployment/azuredeploy.training.json'
         overrideParameters: ''
         deploymentMode: 'Incremental'
 
