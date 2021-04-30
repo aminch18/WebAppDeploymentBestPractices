@@ -84,7 +84,7 @@
                             "value": "[parameters('acrName')]"
                         },
                         {
-                            "name": "DOCKER_REGISTRY_SERVER_PASSWORD ",
+                            "name": "DOCKER_REGISTRY_SERVER_PASSWORD",
                             "value": "[parameters('acrPassword')]"
                         },
                         {
