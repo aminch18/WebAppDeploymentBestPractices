@@ -20,7 +20,7 @@
         },
         "webAppName": {
             "type": "string",
-            "defaultValue": "apponlinux"
+            "defaultValue": "apponcontainers"
         },
         "image": {
             "type": "string"
