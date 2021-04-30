@@ -79,6 +79,7 @@ stages:
         WebAppName: '$(webappName)'
         ResourceGroupName: 'webappbestpractices-borjagr-1234'
         slotName: 'slot'
+        deployToSlotOrASE: true
         packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
   
     - task: AzureAppServiceManage@0
