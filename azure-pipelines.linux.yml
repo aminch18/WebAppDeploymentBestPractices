@@ -76,8 +76,10 @@ stages:
         ConnectionType: 'AzureRM'
         azureSubscription: 'AZURE_CREDENTIALS'
         appType: 'webAppLinux'
-        WebAppName: '$(webappName)-slot'
+        WebAppName: '$(webappName)'
         ResourceGroupName: 'webappbestpractices-borjagr-1234'
+        slotName: 'slot'
+        deployToSlotOrASE: true
         packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
   
     - task: AzureAppServiceManage@0
