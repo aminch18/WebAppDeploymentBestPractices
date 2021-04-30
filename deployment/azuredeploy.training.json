@@ -65,6 +65,12 @@
           "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]"
         }
       }
-    ]
+    ],
+    "outputs":{
+      "webAppName": {
+        "value": "[variables('webAppName')]",
+        "type": "string"
+      }
+    }
   }
   

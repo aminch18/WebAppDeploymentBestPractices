@@ -110,5 +110,11 @@
                 "reserved": true
             }
         }
-    ]
+    ],
+  "outputs":{
+    "webAppName": {
+      "value": "[variables('webAppName')]",
+      "type": "string"
+    }
+  }
 }

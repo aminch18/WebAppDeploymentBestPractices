@@ -56,6 +56,15 @@ stages:
         csmFile: 'deployment/azuredeploy.training.json'
         overrideParameters: ''
         deploymentMode: 'Incremental'
+        deploymentOutputs: 'armOutputs'
+        
+    - task: PowerShell@2
+      inputs:
+        targetType: 'inline'
+        script: |
+          $var=ConvertFrom-Json '$(armOutputs)'
+          $value=$var.webAppName.value
+          Write-Host "##vso[task.setvariable variable=webAppName;]$value"
 
     # download the artifact drop from the previous job
     - task: DownloadBuildArtifacts@0
@@ -67,7 +76,7 @@ stages:
         ConnectionType: 'AzureRM'
         azureSubscription: 'AZURE_CREDENTIALS'
         appType: 'webAppLinux'
-        WebAppName: 'pc-dev-apptraining'
+        WebAppName: '$(webAppName)'
         packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
         DeploymentType: zipDeploy
         ResourceGroupName: 'webappbestpractices-borjagr-1234'
